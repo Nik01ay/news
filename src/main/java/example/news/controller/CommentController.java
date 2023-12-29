@@ -1,4 +1,4 @@
 package example.news.controller;
 
-public class CommintController {
+public class CommentController {
 }

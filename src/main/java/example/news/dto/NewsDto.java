@@ -19,4 +19,8 @@ public class NewsDto {
     private String title;
     private String content;
     private Timestamp createDate;
+    private Integer countComments;
+    private Long authorId;
+    private String authorName;
+    private String groupTitle;
 }
