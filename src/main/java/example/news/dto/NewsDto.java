@@ -23,4 +23,5 @@ public class NewsDto {
     private Long authorId;
     private String authorName;
     private String groupTitle;
+    private Long idTitle;
 }

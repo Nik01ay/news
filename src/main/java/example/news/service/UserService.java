@@ -27,9 +27,9 @@ public class UserService {
                 UserMapper.USER_MAPPER::toUserDto).toList();
     }
 
-    public UserDto findById(Long id){
+    public UserEntity findById(Long id){
         UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
-        return UserMapper.USER_MAPPER.toUserDto(userEntity);
+        return userEntity;
     };
 
     public UserDto create(UserDto userDto){
