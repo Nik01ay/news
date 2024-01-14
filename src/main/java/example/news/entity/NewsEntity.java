@@ -23,7 +23,7 @@ public class NewsEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "DATETIME")
+
     private Timestamp createDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

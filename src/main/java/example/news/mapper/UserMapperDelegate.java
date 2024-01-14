@@ -21,4 +21,12 @@ public abstract class UserMapperDelegate implements UserMapper{
         userEntity.setCommentEntityList(commentService.getByUserId(userDto.getId()));
         return userEntity;
     }
+    @Override
+    public UserDto toUserDto(UserEntity userEntity) {
+        UserDto userDto = new UserDto();
+        userDto.setId(userEntity.getId());
+        userDto.setName(userEntity.getName());
+        return userDto;
+    }
+
 }

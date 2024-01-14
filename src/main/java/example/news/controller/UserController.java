@@ -4,7 +4,7 @@ import example.news.dto.UserDto;
 import example.news.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +24,6 @@ public class UserController {
         PageRequest page = PageRequest.of(from / size, size);
         return userService.findAll(page);
     }
+
 
 }

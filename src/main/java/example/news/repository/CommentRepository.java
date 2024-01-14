@@ -11,10 +11,10 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 
-    List<CommentEntity> findAllByNews(Long news, Pageable pageable);
-    List<CommentEntity> findAllByNews(Long news);
-    List<CommentEntity> findAllByUser(Long user, Pageable pageable);
-    List<CommentEntity> findAllByUser(Long user);
+  //  List<CommentEntity> findAllByNews(Long news, Pageable pageable);
+    List<CommentEntity> findAllByNewsId(Long newsId);
+    List<CommentEntity> findAllByUserId(Long userId, Pageable pageable);
+    List<CommentEntity> findAllByUserId(Long userId);
 
     List<CommentEntity> findAll();
 }

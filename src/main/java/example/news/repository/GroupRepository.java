@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
-    List<GroupEntity> findAllByNews(Long news);
+    //List<GroupEntity> findAllByNews(Long news);
 }

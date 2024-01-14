@@ -1,17 +1,18 @@
 package example.news.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+
+
+
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewsWithCommentsDto extends NewsDto{
+public class NewsWithCommentsDto {
+    private NewsDto newsDto;
     private List<CommentDto> commentDtoList;
 
 }

@@ -16,6 +16,5 @@ public class CommentDto {
     private Long id;
     private String content;
     private Timestamp createDate;
-    private String authorName;
-    private String newsTitle;
+    private UserDto user;
 }

@@ -20,14 +20,12 @@ public class CommentEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "DATETIME")
+
     private Timestamp createDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "news")
     private NewsEntity news;
 }

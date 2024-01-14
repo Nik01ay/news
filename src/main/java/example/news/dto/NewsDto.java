@@ -3,25 +3,24 @@ package example.news.dto;
 import example.news.entity.GroupEntity;
 import example.news.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 
-@Data
+
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewsDto {
+public class NewsDto  {
     private Long id;
     private String title;
     private String content;
     private Timestamp createDate;
     private Integer countComments;
     private Long authorId;
+    private Long groupId;
     private String authorName;
     private String groupTitle;
-    private Long idTitle;
+
 }

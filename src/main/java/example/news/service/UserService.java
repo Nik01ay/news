@@ -23,6 +23,7 @@ public class UserService {
 
     public List<UserDto> findAll(Pageable page) {
         List<UserEntity> userEntityList = userRepository.findAll(page).getContent();
+
         return userEntityList.stream().map(
                 UserMapper.USER_MAPPER::toUserDto).toList();
     }

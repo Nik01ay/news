@@ -19,7 +19,7 @@ public class GroupEntity {
 
     private String title;
 
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<NewsEntity> newsEntityList;
 
 
