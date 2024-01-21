@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto {
+public class CommentDto extends AbstractDto{
     private Long id;
     private String content;
     private Timestamp createDate;

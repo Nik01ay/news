@@ -27,6 +27,39 @@ public class CommentController {
         return commentService.findAll(page);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto findById(
+            @PathVariable Long id) {
+        return commentService.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto create(
+            @RequestParam(name = "newsId") Long newsId,
+            @RequestParam(name = "userId") Long userId,
+            @RequestBody CommentDto commentDto) {
+        return commentService.create(newsId, userId, commentDto);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto updateById(
+            @RequestParam(name = "newsId") Long newsId,
+            @RequestParam(name = "userId") Long userId,
+            @RequestBody CommentDto commentDto) {
+        return commentService.update(newsId, userId, commentDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(
+            @RequestParam(name = "userId") Long userId,
+            @PathVariable Long id) {
+        commentService.deleteById(id, userId);
+    }
+
 }
 
 

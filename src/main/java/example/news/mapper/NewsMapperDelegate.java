@@ -27,8 +27,8 @@ public abstract class NewsMapperDelegate implements NewsMapper {
         newsEntity.setId(newsDto.getId());
         newsEntity.setTitle(newsDto.getTitle());
         newsEntity.setCreateDate(newsDto.getCreateDate());
-        newsEntity.setAuthor(userService.findById(newsDto.getAuthorId()));
-        newsEntity.setGroup(groupService.getById(newsDto.getGroupId()));
+        newsEntity.setAuthor(userService.findByIdOrNodFoundException(newsDto.getAuthorId()));
+        newsEntity.setGroup(groupService.findByIdOrNodFoundException(newsDto.getGroupId()));
         newsEntity.setCommentEntityList(commentService.getByNewsId(newsDto.getId()));
         return newsEntity;
     }
