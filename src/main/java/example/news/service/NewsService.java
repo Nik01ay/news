@@ -1,15 +1,15 @@
 package example.news.service;
 
+import example.news.aop.Loggable;
+import example.news.aop.SecureAccess;
 import example.news.dto.NewsDto;
 import example.news.dto.NewsWithCommentsDto;
-import example.news.dto.UserDto;
 import example.news.entity.NewsEntity;
-import example.news.entity.UserEntity;
 import example.news.error.exceptions.ObjectNotFoundException;
+import example.news.filter.NewsFilter;
 import example.news.mapper.NewsMapper;
-import example.news.mapper.UserMapper;
 import example.news.repository.NewsRepository;
-import lombok.extern.log4j.Log4j;
+import example.news.specification.NewsSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -53,31 +53,24 @@ public class NewsService {
         return NewsMapper.NEWS_MAPPER.toNewsDto(newsEntity);
     }
 
-
-    public NewsDto update(NewsDto newsDto, Long userId) {
+    @SecureAccess
+    public NewsDto update(Long id, Long userId, NewsDto newsDto) {
         NewsEntity ne = findByIdOrNodFoundException(newsDto.getId());
-        if (verificationUserIdAuthor(newsDto.getAuthorId(), userId)) {
             ne.setContent(newsDto.getContent());
             ne.setTitle(newsDto.getTitle());
             newsRepository.save(ne);
-        }
         return NewsMapper.NEWS_MAPPER.toNewsDto(ne);
     }
-
+@SecureAccess
     public void deleteById(Long id, Long userId) {
-       if (verificationUserIdAuthor(id, userId)) {
            NewsEntity ne = findByIdOrNodFoundException(id);
            newsRepository.deleteById(ne.getId());
-       }
+
     }
-
-    private boolean verificationUserIdAuthor(Long newsId, Long userId) {
-        if (!(newsRepository.findById(newsId).get().getAuthor().getId() == userId)){
-            log.warn("edit news access error");
-            throw new ObjectNotFoundException("access error. rights don't allow for edit news");
-        } else
-            return true;
+@Loggable
+    public List<NewsDto> filteredByCriteria(NewsFilter filter, PageRequest page) {
+        return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page).stream()
+                .map(NewsMapper.NEWS_MAPPER::toNewsDto)
+                .collect(Collectors.toList());
     }
-
-
 }

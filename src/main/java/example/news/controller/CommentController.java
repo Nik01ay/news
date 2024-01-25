@@ -46,10 +46,9 @@ public class CommentController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CommentDto updateById(
-            @RequestParam(name = "newsId") Long newsId,
             @RequestParam(name = "userId") Long userId,
             @RequestBody CommentDto commentDto) {
-        return commentService.update(newsId, userId, commentDto);
+        return commentService.update(commentDto.getId(), userId,commentDto);
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 package example.news.service;
 
+import example.news.aop.Loggable;
+import example.news.aop.SecureAccess;
 import example.news.dto.CommentDto;
 import example.news.entity.CommentEntity;
 import example.news.entity.NewsEntity;
@@ -39,6 +41,7 @@ public class CommentService {
         return commentRepository.findAllByUserId(id);
     }
 
+    @Loggable
     public List<CommentDto> findAll(PageRequest page) {
         return commentRepository.findAll().stream().map(CommentMapper.COMMENT_MAPPER::toCommentDto).collect(Collectors.toList());
     }
@@ -59,7 +62,6 @@ public class CommentService {
     }
 
     public CommentDto create(Long newsId, Long userId, CommentDto commentDto) {
-/// TODO: 19.01.2024  переделать на сервис
         CommentEntity comment = CommentMapper.COMMENT_MAPPER.toCommentEntity(commentDto);
         comment.setNews(newsRepository.findById(newsId).get());
         comment.setUser(userRepository.findById(userId).get());
@@ -68,31 +70,22 @@ public class CommentService {
     }
 
 
-    public CommentDto update(Long newsId, Long userId, CommentDto commentDto) {
-
+    @SecureAccess
+    public CommentDto update(Long id, Long userId, CommentDto commentDto) {
         CommentEntity comment = findByIdOrNotFoundThrow(commentDto.getId());
-        if (verificationUserIdAuthor(comment.getId(), userId)) {
-            comment.setContent(commentDto.getContent());
-            comment.setCreateDate(Timestamp.from(Instant.now()));
-            NewsEntity news = newsRepository.findById(newsId).get();
-            comment.setNews(news);
-        }
+        comment.setContent(commentDto.getContent());
+        comment.setCreateDate(Timestamp.from(Instant.now()));
         CommentEntity savedComment = commentRepository.save(comment);
         return CommentMapper.COMMENT_MAPPER.toCommentDto(savedComment);
     }
 
+    @Loggable
+    @SecureAccess
     public void deleteById(Long id, Long userId) {
         CommentEntity comment = findByIdOrNotFoundThrow(id);
-        if (verificationUserIdAuthor(comment.getId(), userId)) {
-            commentRepository.deleteById(id);
-        }
+        commentRepository.deleteById(id);
+
     }
 
-    private boolean verificationUserIdAuthor(Long commentId, Long userId) {
-        if (!(commentRepository.findById(commentId).get().getUser().getId() == userId)){
-            log.warn("access error not rights edit comments");
-            throw new ObjectNotFoundException("access error. rights don't allow for edit comment");
-        } else
-        return true;
-    }
+
 }

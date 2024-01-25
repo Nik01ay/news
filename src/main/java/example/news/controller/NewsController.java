@@ -4,6 +4,7 @@ package example.news.controller;
 import example.news.dto.NewsDto;
 import example.news.dto.NewsWithCommentsDto;
 
+import example.news.filter.NewsFilter;
 import example.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,19 @@ import java.util.List;
     @RequiredArgsConstructor
     public class NewsController {
         private final NewsService newsService;
+
+
+        @GetMapping("/find/")
+        @ResponseStatus(HttpStatus.OK)
+        public List<NewsDto> findAllSpecification(
+                @ModelAttribute NewsFilter filter,
+                 @RequestParam(defaultValue = "0") Integer from,
+                 @RequestParam(defaultValue = "10") Integer size) {
+
+            PageRequest page = PageRequest.of(from / size, size);
+
+            return newsService.filteredByCriteria(filter, page);
+        }
 
         @GetMapping
         @ResponseStatus(HttpStatus.OK)

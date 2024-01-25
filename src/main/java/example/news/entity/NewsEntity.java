@@ -27,7 +27,7 @@ public class NewsEntity {
     private Timestamp createDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity author;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private GroupEntity group;
