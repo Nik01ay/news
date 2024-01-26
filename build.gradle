@@ -23,7 +23,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.1.0'
 	runtimeOnly 'org.postgresql:postgresql:42.6.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
@@ -32,6 +34,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
 	implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	annotationProcessor group:  'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
 }
 
