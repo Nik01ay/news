@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,8 +25,11 @@ import java.util.stream.Collectors;
 public class NewsService {
     @Autowired
     private NewsRepository newsRepository;
-    public List<NewsEntity> getByUserId(Long id) {
-        return newsRepository.findByAuthorId(id);
+    public Optional<List<NewsEntity>> getByUserId(Long id) {
+        System.out.println("servise");
+        List<NewsEntity> newsList = newsRepository.findByUserId(id);
+
+        return Optional.ofNullable(newsList);
     }
 
     public List<NewsDto> findAll(PageRequest page) {

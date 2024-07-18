@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,8 +38,8 @@ public class CommentService {
         return commentRepository.findAllByNewsId(id);
     }
 
-    public List<CommentEntity> getByUserId(Long id) {
-        return commentRepository.findAllByUserId(id);
+    public Optional<List<CommentEntity>> getByUserId(Long id) {
+        return Optional.ofNullable(commentRepository.findAllByUserId(id));
     }
 
     @Loggable

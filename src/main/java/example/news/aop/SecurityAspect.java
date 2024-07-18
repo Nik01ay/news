@@ -24,6 +24,7 @@ import java.nio.file.AccessDeniedException;
 
 @Aspect
 @Component
+
 public class SecurityAspect {
 
     @Autowired
@@ -31,7 +32,7 @@ public class SecurityAspect {
     @Autowired
     private NewsRepository newsRepository;
 
-    @Before("@annotation(SecureAccess)")
+    /* @Before("@annotation(SecureAccess)")
     public Object secureBefore(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Object[] args = joinPoint.getArgs();
@@ -66,7 +67,7 @@ public class SecurityAspect {
 
        }
         return joinPoint.proceed();
-    }
+    }*/
 
 
 }

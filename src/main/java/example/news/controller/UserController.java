@@ -20,6 +20,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,

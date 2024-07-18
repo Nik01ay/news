@@ -19,7 +19,7 @@ public class UserEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NewsEntity> newsEntityList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
