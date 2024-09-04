@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Table(name = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentEntity {
+public class CommentEntity implements OwnerInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,4 +30,8 @@ public class CommentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private NewsEntity news;
+    @Override
+    public UserEntity getUser() {
+        return this.user;
+    }
 }

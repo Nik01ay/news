@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "news")
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewsEntity {
+public class NewsEntity implements OwnerInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,5 +34,10 @@ public class NewsEntity {
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<CommentEntity> commentEntityList;
+    @Override
+    public UserEntity getUser() {
+        return this.user;
+    }
+
 
 }
