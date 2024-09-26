@@ -8,6 +8,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class CommentController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('COMMENT_READ')")
     public List<CommentDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                     @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -30,6 +32,7 @@ public class CommentController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('COMMENT_READ')")
     public CommentDto findById(
             @Positive @PathVariable Long id) {
         return commentService.findById(id);
@@ -37,6 +40,7 @@ public class CommentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyAuthority('COMMENT_CREATE')")
     public CommentDto create(
             @Positive @RequestParam(name = "newsId") Long newsId,
             @Positive @RequestParam(name = "userId") Long userId,
@@ -46,6 +50,8 @@ public class CommentController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('COMMENT_UPDATE')")
+    //todo как проверить права пользователя на измменение (если это его коммент) используя SpringSecurity ?
     public CommentDto updateById(
             @Positive @RequestParam(name = "userId") Long userId,
             @RequestBody @Validated CommentDto commentDto) {
@@ -53,6 +59,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('COMMENT_DELETE')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(
            @Positive @RequestParam(name = "userId") Long userId,

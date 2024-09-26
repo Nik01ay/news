@@ -33,7 +33,9 @@ public class UserService {
         return UserMapper.USER_MAPPER.toUserDto(findByIdOrNodFoundException(id));
     }
 
-    ;
+    public UserEntity findEntityById(Long id) {
+        return findByIdOrNodFoundException(id);
+    }
 
     public UserEntity findByIdOrNodFoundException(Long id) {
 
@@ -69,4 +71,7 @@ public class UserService {
     }
 
 
+    public UserDto findByName(String username) {
+        return  UserMapper.USER_MAPPER.toUserDto(userRepository.findByName(username));
+    }
 }

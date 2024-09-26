@@ -11,6 +11,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +23,14 @@ import java.util.List;
     @RestController
     @RequestMapping(path = "/news")
     @RequiredArgsConstructor
+
     public class NewsController {
         private final NewsService newsService;
 
 
         @GetMapping("/find/")
         @ResponseStatus(HttpStatus.OK)
+        @PreAuthorize("hasAnyAuthority('NEWS_READ')")
         public List<NewsDto> findAllSpecification(
                 @ModelAttribute NewsFilter filter,
                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
@@ -40,6 +43,7 @@ import java.util.List;
 
         @GetMapping
         @ResponseStatus(HttpStatus.OK)
+        @PreAuthorize("hasAnyAuthority('NEWS_READ')")
         public List<NewsDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -49,6 +53,7 @@ import java.util.List;
 
         @GetMapping("/{id}")
         @ResponseStatus(HttpStatus.OK)
+        @PreAuthorize("hasAnyAuthority('NEWS_READ')")
         public NewsWithCommentsDto findById(@Positive @PathVariable("id") Long id) {
             return newsService.findById(id);
         }
