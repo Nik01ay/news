@@ -31,7 +31,7 @@ public class UserDto implements InterfaceDto {
     @JsonIgnore
     private String password;
 
-    private Set<String> roles;
+    private Set<String> roleNames;
 
     private Set<String> permission;
 

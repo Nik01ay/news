@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class UserMapperDelegate implements UserMapper {
@@ -30,7 +31,7 @@ public abstract class UserMapperDelegate implements UserMapper {
 
         List<NewsEntity> newsEntityList;
         if (newsService != null) {
-            newsEntityList = newsService.getByUserId(userDto.getId()).orElse(new ArrayList<>());
+            newsEntityList = newsService.getByUserId(userDto.getId());
         } else newsEntityList = new ArrayList<>();
         userEntity.setNewsEntityList(newsEntityList);
 
@@ -41,7 +42,7 @@ public abstract class UserMapperDelegate implements UserMapper {
         } else commentEntityList = new ArrayList<>();
         userEntity.setCommentEntityList(commentEntityList);
 
-        userEntity.setRoles(roleService.findByNameSet(userDto.getRoles()));
+        userEntity.setRoles(roleService.findByNameSet(userDto.getRoleNames()));
 
         return userEntity;
     }
@@ -51,7 +52,7 @@ public abstract class UserMapperDelegate implements UserMapper {
         UserDto userDto = new UserDto();
         userDto.setId(userEntity.getId());
         userDto.setName(userEntity.getName());
-        userDto.setRoles(userEntity.getRoles().stream().map(Role::getName).collect(Collectors.toSet()));
+        userDto.setRoleNames(userEntity.getRoles().stream().map(Role::getName).collect(Collectors.toSet()));
 
         userDto.setPermission(userEntity.getRoles().stream().flatMap(
                 role -> role.getPermissions().stream()
@@ -60,5 +61,6 @@ public abstract class UserMapperDelegate implements UserMapper {
 
         return userDto;
     }
+
 
 }
