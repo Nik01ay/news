@@ -28,16 +28,14 @@ public class UserDto implements InterfaceDto {
     @NotNull
     @Size(min = 2, max = 50)
     private String name;
-    @JsonIgnore
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Доступ только для записи
     private String password;
 
     private Set<String> roleNames;
 
     private Set<String> permission;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Доступ только для записи
-    public String getPassword() {
-        return password;
-    }
+
 
 }

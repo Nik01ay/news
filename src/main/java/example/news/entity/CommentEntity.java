@@ -30,6 +30,7 @@ public class CommentEntity implements OwnerInterface {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private NewsEntity news;
+
     @Override
     public UserEntity getUser() {
         return this.user;

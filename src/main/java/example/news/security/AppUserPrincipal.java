@@ -16,14 +16,17 @@ public class AppUserPrincipal implements UserDetails {
     private final UserDto user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getPermission().stream()
-                .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
-        /*return user.getRoles().stream()
+        return user.getRoleNames().stream()
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
 
-         */
-        //todo убрал роли, поменял на права т.к. это более гибко
     }
+
+    public Long getId(){
+        return user.getId();
+    }
+
+
+
 
     @Override
     public String getPassword() {

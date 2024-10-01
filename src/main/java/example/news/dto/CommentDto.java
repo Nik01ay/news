@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.sql.Timestamp;
 
-@Data
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +28,48 @@ public class CommentDto extends AbstractDto{
     private Timestamp createDate;
 
     private UserDto user;
+
+    private Long newsId;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
+
+    public Long getNewsId() {
+        return newsId;
+    }
+
+    public void setNewsId(Long newsId) {
+        this.newsId = newsId;
+    }
 }

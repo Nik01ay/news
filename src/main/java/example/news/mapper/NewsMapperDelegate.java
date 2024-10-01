@@ -6,19 +6,22 @@ import example.news.entity.NewsEntity;
 import example.news.service.CommentService;
 import example.news.service.GroupService;
 import example.news.service.UserService;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
-
+@Component
+@Mapper(componentModel = "spring")
 public abstract class NewsMapperDelegate implements NewsMapper {
-    @Autowired
+   /* @Autowired
     private UserService userService;
     @Autowired
     private GroupService groupService;
 
     @Autowired
     private CommentService commentService;
-
+*/
 
     @Override
     public NewsEntity toNewsEntity(NewsDto newsDto) {
@@ -27,9 +30,11 @@ public abstract class NewsMapperDelegate implements NewsMapper {
         newsEntity.setId(newsDto.getId());
         newsEntity.setTitle(newsDto.getTitle());
         newsEntity.setCreateDate(newsDto.getCreateDate());
-        newsEntity.setUser(userService.findByIdOrNodFoundException(newsDto.getUserId()));
+      /*  newsEntity.setUser(userService.findByIdOrNodFoundException(newsDto.getUserId()));
         newsEntity.setGroup(groupService.findByIdOrNodFoundException(newsDto.getGroupId()));
         newsEntity.setCommentEntityList(commentService.getByNewsId(newsDto.getId()));
+
+       */
         return newsEntity;
     }
 
