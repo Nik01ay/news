@@ -59,7 +59,7 @@ public class NewsService {
     }
 
     @SecureAccess
-    public NewsDto update(Long id, Long userId, NewsDto newsDto) {
+    public NewsDto update(NewsDto newsDto) {
         NewsEntity ne = findByIdOrNodFoundException(newsDto.getId());
             ne.setContent(newsDto.getContent());
             ne.setTitle(newsDto.getTitle());
@@ -67,7 +67,7 @@ public class NewsService {
         return NewsMapper.NEWS_MAPPER.toNewsDto(ne);
     }
 @SecureAccess
-    public void deleteById(Long id, Long userId) {
+    public void deleteById(Long id) {
            NewsEntity ne = findByIdOrNodFoundException(id);
            newsRepository.deleteById(ne.getId());
 

@@ -41,6 +41,7 @@ public abstract class UserMapperDelegate implements UserMapper {
         userEntity.setId(userDto.getId());
         userEntity.setName(userDto.getName());
         userEntity.setPassword(userDto.getPassword());
+
         /*List<NewsEntity> newsEntityList;
         if (newsService != null) {
             newsEntityList = newsService.getByUserId(userDto.getId()).orElse(new ArrayList<>());
@@ -57,7 +58,7 @@ public abstract class UserMapperDelegate implements UserMapper {
         userEntity.setCommentEntityList(commentEntityList);
 */
         //if (roleService !=null) {
-            /*userEntity.setRoleNames(roleService.findByNameSet(userDto.getRoleNames())
+            /*userEntity.setRoles(roleService.findByNameSet(userDto.getRoleNames())
                     .orElse(roleService.addRoleSet(userDto.getRoleNames())));
 */
 

@@ -63,6 +63,7 @@ public class UserService {
 
     public UserDto create(UserDto userDto) {
         UserEntity userEntity = UserMapper.USER_MAPPER.toUserEntity(userDto);
+
         userEntity.setRoles(roleService.addRoleSet(userDto.getRoleNames()));
 
         userRepository.save(userEntity);

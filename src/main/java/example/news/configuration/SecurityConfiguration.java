@@ -46,12 +46,13 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(
                 (auth) -> auth
                         //todo где пользователю назначаются роли что бы были доступны по .hasAnyRole ?
-                        .requestMatchers("/users/**").hasAnyRole("ADMIN", "MODERATOR")
+                        .requestMatchers("/account").permitAll()
+                        .requestMatchers("/users/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
                         .requestMatchers("/groups/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
                         .requestMatchers("/news/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
                         .requestMatchers("/comments/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
 
-                        .requestMatchers("/account").permitAll()
+
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())

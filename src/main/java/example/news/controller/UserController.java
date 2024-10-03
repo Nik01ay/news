@@ -3,6 +3,7 @@ package example.news.controller;
 import example.news.dto.CommentDto;
 import example.news.dto.UserDto;
 import example.news.security.AppUserPrincipal;
+import example.news.security.SecurityManager;
 import example.news.service.UserService;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +29,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private final UserService userService;
-
+    @Autowired
+    private final SecurityManager securityManager;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,19 +44,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public UserDto findById(
             @Positive @PathVariable Long id,
             @AuthenticationPrincipal AppUserPrincipal userDetails) {
 
-        if (userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) ||
-                        grantedAuthority.getAuthority().equals("ROLE_MODERATOR")) ||
-                (id == userDetails.getId())) {
-            return userService.findById(id);
-        } else {
-            return new UserDto();
-        }
+        securityManager.checkAccess(id, userDetails);
+
+        return userService.findById(id);
+
     }
 
     @PostMapping
@@ -66,14 +64,19 @@ public class UserController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
 
-    public UserDto updateById(@Validated @RequestBody UserDto userDto) {
+    public UserDto updateById(@Positive @PathVariable Long id,
+                              @Validated @RequestBody UserDto userDto,
+                              @AuthenticationPrincipal AppUserPrincipal userDetails) {
+        securityManager.checkAccess(id, userDetails);
         return userService.update(userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
 
-    public void deleteById(@Positive @PathVariable Long id) {
+    public void deleteById(@Positive @PathVariable Long id,
+                           @AuthenticationPrincipal AppUserPrincipal userDetails) {
+        securityManager.checkAccess(id, userDetails);
         userService.deleteById(id);
     }
 

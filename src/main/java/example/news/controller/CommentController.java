@@ -2,13 +2,17 @@ package example.news.controller;
 
 import example.news.dto.CommentDto;
 
+import example.news.security.AppUserPrincipal;
+import example.news.security.SecurityManager;
 import example.news.service.CommentService;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +23,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
+    @Autowired
+    private final SecurityManager securityManager;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('COMMENT_READ')")
+
     public List<CommentDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                     @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -32,7 +38,7 @@ public class CommentController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('COMMENT_READ')")
+
     public CommentDto findById(
             @Positive @PathVariable Long id) {
         return commentService.findById(id);
@@ -40,22 +46,28 @@ public class CommentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority('COMMENT_CREATE')")
+
     public CommentDto create(
             @Positive @RequestParam(name = "newsId") Long newsId,
-            @Positive @RequestParam(name = "userId") Long userId,
-            @RequestBody @Validated CommentDto commentDto) {
-        return commentService.create(newsId, userId, commentDto);
+            @RequestBody @Validated CommentDto commentDto,
+             @AuthenticationPrincipal AppUserPrincipal userDetails
+    )
+
+    {
+
+        return commentService.create(newsId,userDetails.getId(),  commentDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('COMMENT_UPDATE')")
-    //todo как проверить права пользователя на измменение (если это его коммент) используя SpringSecurity ?
+
     public CommentDto updateById(
-            @Positive @RequestParam(name = "userId") Long userId,
-            @RequestBody @Validated CommentDto commentDto) {
-        return commentService.update(commentDto.getId(), userId,commentDto);
+            @RequestBody @Validated CommentDto commentDto,
+            @AuthenticationPrincipal AppUserPrincipal userDetails) {
+        //todo в чём смысл писать через АОП????
+        securityManager.checkAccess(commentDto.getUser().getId(), userDetails);
+        return commentService.update(commentDto.getId(), userDetails.getId(),commentDto);
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +75,9 @@ public class CommentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(
            @Positive @RequestParam(name = "userId") Long userId,
-           @Positive @PathVariable Long id) {
+           @Positive @PathVariable Long id,
+           @AuthenticationPrincipal AppUserPrincipal userDetails) {
+        securityManager.checkAccess(commentService.findById(id).getUser().getId(), userDetails);
         commentService.deleteById(id, userId);
     }
 
